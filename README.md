@@ -1,4 +1,4 @@
-wercker-step-slack-deploy-status
+wercker-step-slack-post
 ================================
 
-Post wercker deploy status to slack.com
+Post wercker build/deploy status to slack.com
