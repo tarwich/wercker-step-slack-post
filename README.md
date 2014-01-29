@@ -58,6 +58,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Changelog
 
+## 0.0.3
+- Updated 'fatal' directive to 'fail'
+
 ## 0.0.2
 - Better README
 - Added repository name in the message itself.
