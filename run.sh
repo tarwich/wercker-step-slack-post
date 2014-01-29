@@ -1,11 +1,11 @@
 #!/bin/bash
 
 if [ ! -n "$WERCKER_SLACK_POST_SUBDOMAIN" ]; then
-  fatal 'Missing subdomain property'
+  fail 'Missing subdomain property'
 fi
 
 if [ ! -n "$WERCKER_SLACK_POST_TOKEN" ]; then
-  fatal 'Missing token property'
+  fail 'Missing token property'
 fi
 
 if [ ! -n "$WERCKER_SLACK_POST_USERNAME" ]; then
@@ -43,22 +43,22 @@ RESULT=`curl -d "payload=$json" -s  "https://$WERCKER_SLACK_POST_SUBDOMAIN.slack
 
 if [ "$RESULT" = "500" ]; then
   if grep -Fqx "No token" $WERCKER_STEP_TEMP/result.txt; then
-    fatal "No token is specified."
+    fail "No token is specified."
   fi
 
   if grep -Fqx "No hooks" $WERCKER_STEP_TEMP/result.txt; then
-    fatal "No hook can be found for specified subdomain/token"
+    fail "No hook can be found for specified subdomain/token"
   fi
 
   if grep -Fqx "Invalid channel specified" $WERCKER_STEP_TEMP/result.txt; then
-    fatal "Could not find specified channel for subdomain/token."
+    fail "Could not find specified channel for subdomain/token."
   fi
 
   if grep -Fqx "No text specified" $WERCKER_STEP_TEMP/result.txt; then
-    fatal "No text specified."
+    fail "No text specified."
   fi
 fi
 
 if [ "$RESULT" = "404" ]; then
-  fatal "Subdomain or token not found."
+  fail "Subdomain or token not found."
 fi
