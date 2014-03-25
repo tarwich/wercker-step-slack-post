@@ -58,6 +58,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Changelog
 
+## 0.0.4
+- Removed the owner name from the post text.
+
 ## 0.0.3
 - Updated 'fatal' directive to 'fail'
 
