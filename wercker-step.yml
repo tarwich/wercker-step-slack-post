@@ -1,15 +1,12 @@
 name: slack-post
-version: 0.0.4
+version: 0.0.5
 description: Posts wercker build/deploy status to a Slack Channel.
 keywords:
   - notification
   - webhook
   - slack
 properties:
-  subdomain:
-    type: string
-    required: true
-  token:
+  url:
     type: string
     required: true
   channel:

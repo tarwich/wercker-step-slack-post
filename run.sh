@@ -1,11 +1,7 @@
 #!/bin/bash
 
-if [ ! -n "$WERCKER_SLACK_POST_SUBDOMAIN" ]; then
-  fail 'Missing subdomain property'
-fi
-
-if [ ! -n "$WERCKER_SLACK_POST_TOKEN" ]; then
-  fail 'Missing token property'
+if [ ! -n "$WERCKER_SLACK_POST_URL" ]; then
+  fail 'Missing url property'
 fi
 
 if [ ! -n "$WERCKER_SLACK_POST_USERNAME" ]; then
@@ -39,7 +35,7 @@ export WERCKER_SLACK_POST_MESSAGE="<$WERCKER_APPLICATION_URL|$WERCKER_APPLICATIO
 
 json="{\"text\":\"$WERCKER_SLACK_POST_MESSAGE\",\"channel\":\"#$WERCKER_SLACK_POST_CHANNEL\",\"icon_url\":\"https://2.gravatar.com/avatar/f777ecfdf484eed89dc6f215b78fef11?d=57\",\"username\":\"$WERCKER_SLACK_POST_USERNAME\"}"
 
-RESULT=`curl -d "payload=$json" -s  "https://$WERCKER_SLACK_POST_SUBDOMAIN.slack.com/services/hooks/incoming-webhook?token=$WERCKER_SLACK_POST_TOKEN" --output $WERCKER_STEP_TEMP/result.txt -w "%{http_code}"`
+RESULT=`curl -d "payload=$json" -s  "$WERCKER_SLACK_POST_URL" --output $WERCKER_STEP_TEMP/result.txt -w "%{http_code}"`
 
 if [ "$RESULT" = "500" ]; then
   if grep -Fqx "No token" $WERCKER_STEP_TEMP/result.txt; then

@@ -6,8 +6,7 @@ Posts wercker build/deploy status to a [Slack Channel](https://slack.com/).
 
 ### Required fields
 
-* `subdomain` - Your slack subdomain.
-* `token` - Incoming WebHook token (get it at `https://<subdomain>.slack.com/services/new/incoming-webhook`).
+* `url` - Your incoming webhook url (get it at `https://<subdomain>.slack.com/services/new/incoming-webhook`).
 
 ### Optional fields
 
@@ -16,20 +15,19 @@ Posts wercker build/deploy status to a [Slack Channel](https://slack.com/).
 
 ### How to configure?
 
-Under your project settings, add new Pipeline variable named `SLACK_TOKEN` with your
-WebHook token. You then reference this variable in your [wercker.yml](http://devcenter.wercker.com/articles/werckeryml/).
+Under your project settings, add new Pipeline variable named `SLACK_URL` with your
+WebHook url. You then reference this variable in your [wercker.yml](http://devcenter.wercker.com/articles/werckeryml/).
 
 
 # Example
 
-Add `SLACK_TOKEN` as deploy target or application environment variable.
+Add `SLACK_URL` as deploy target or application environment variable.
 
 
     build:
         after-steps:
             - kobim/slack-post:
-                subdomain: mycompany
-                token: $SLACK_TOKEN
+                url: $SLACK_URL
                 channel: dev # OPTIONAL
                 username: builder # OPTIONAL
 
