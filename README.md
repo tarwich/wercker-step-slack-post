@@ -56,6 +56,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Changelog
 
+## 0.0.6
+- Bugfix
+
+## 0.0.5
+- New slack format
+
 ## 0.0.4
 - Removed the owner name from the post text.
 
