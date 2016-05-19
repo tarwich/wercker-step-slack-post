@@ -70,6 +70,7 @@ json=$(cat <<END
     "fallback":    "Build $WERCKER_RESULT in $WERCKER_TIME_SPENT",
     "color":       "$MESSAGE_COLOR",
     "author_name": "$WERCKER_STARTED_BY",
+    "author_link": "https://github.com/$WERCKER_STARTED_BY",
     "title":       $(json_escape "$COMMIT_HEADER"),
     "title_link":  "http://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY/$GIT_TREE/$WERCKER_GIT_COMMIT",
     "text":        $(json_escape "$COMMIT_BODY"),
@@ -85,7 +86,7 @@ json=$(cat <<END
             "short": true
         },
         {
-            "title": "$WERCKER_SLACK_POST_ACT",
+            "title": "$WERCKER_SLACK_POST_ACT $WERCKER_RESULT",
             "value": "$WERCKER_SLACK_POST_WURL",
             "short": true
         },
