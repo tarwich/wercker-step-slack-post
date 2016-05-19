@@ -21,10 +21,10 @@ fi
 
 if [ ! -n "$DEPLOY" ]; then
   export WERCKER_SLACK_POST_ACT="Build"
-  export WERCKER_SLACK_POST_WURL="#<$WERCKER_BUILD_URL|${WERCKER_BUILD_ID:0:7}>"
+  export WERCKER_SLACK_POST_WURL="<$WERCKER_BUILD_URL|#${WERCKER_BUILD_ID:0:7}>"
 else
   export WERCKER_SLACK_POST_ACT="Deploy"
-  export WERCKER_SLACK_POST_WURL="#<$WERCKER_DEPLOY_URL|${WERCKER_DEPLOY_ID:0:7}>"
+  export WERCKER_SLACK_POST_WURL="<$WERCKER_DEPLOY_URL|#${WERCKER_DEPLOY_ID:0:7}>"
 fi
 
 if [[ $WERCKER_GIT_DOMAIN == bitbucket* ]]; then export GIT_TREE="commits"; else export GIT_TREE="commit"; fi
@@ -33,9 +33,12 @@ if [[ $WERCKER_GIT_DOMAIN == bitbucket* ]]; then export GIT_TREE="commits"; else
 WERCKER_TIME_START=$WERCKER_MAIN_PIPELINE_STARTED
 WERCKER_TIME_END=$(date +"%s")
 WERCKER_TIME_DIFF=$(($WERCKER_TIME_END-$WERCKER_TIME_START))
-WERCKER_TIME_SPENT="in $(($WERCKER_TIME_DIFF / 60)) min $(($WERCKER_TIME_DIFF % 60)) sec."
+WERCKER_TIME_SPENT="$(($WERCKER_TIME_DIFF / 60)) min $(($WERCKER_TIME_DIFF % 60)) sec."
 
-export LATEST_COMMIT=$(git log -1 --pretty=%B)
+LATEST_COMMIT=$(git log -1 --pretty=%B)
+COMMIT_HEADER="$(echo "$LATEST_COMMIT" | head -n 1 )"
+COMMIT_BODY=$(echo "$LATEST_COMMIT" | tail -n +2)
+COMMIT_BODY=${var#"${var%%[![:space:]]*}"}
 export WERCKER_SLACK_POST_GIT="<http://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY/$GIT_TREE/$WERCKER_GIT_COMMIT|$WERCKER_GIT_REPOSITORY/$WERCKER_GIT_BRANCH@${WERCKER_GIT_COMMIT:0:3}..>"
 export WERCKER_SLACK_POST_GIT="<http://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY/$GIT_TREE/$WERCKER_GIT_COMMIT|#${WERCKER_GIT_COMMIT:0:7}>"
 
@@ -67,9 +70,9 @@ json=$(cat <<END
     "fallback":    "Build $WERCKER_RESULT in $WERCKER_TIME_SPENT",
     "color":       "$MESSAGE_COLOR",
     "author_name": "$WERCKER_STARTED_BY",
-    "title":       "$WERCKER_APPLICATION_NAME",
-    "title_link":  "$WERCKER_APPLICATION_URL",
-    "text":        $(json_escape "$LATEST_COMMIT"),
+    "title":       $(json_escape "$COMMIT_HEADER"),
+    "title_link":  "http://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY/$GIT_TREE/$WERCKER_GIT_COMMIT",
+    "text":        $(json_escape "$COMMIT_BODY"),
     "fields": [
         {
             "title": "Commit",
