@@ -54,7 +54,7 @@ case "$WERCKER_RESULT" in
 esac
 
 # "channel":  "#$WERCKER_SLACK_POST_CHANNEL",
-json=<<END
+json=$(cat <<END
 {
   "fallback": "$WERCKER_SLACK_FALLBACK_MESSAGE",
   "channel":  "#test",
@@ -83,7 +83,7 @@ json=<<END
     "thumb_url": "http://example.com/path/to/thumb.png"
   }]
 }
-END
+END)
 
 RESULT=`curl -d "payload=$json" -s  "$WERCKER_SLACK_POST_URL" --output $WERCKER_STEP_TEMP/result.txt -w "%{http_code}"`
 
@@ -97,7 +97,7 @@ if [ "$RESULT" = "500" ]; then
   elif grep -Fqx "No text specified" $WERCKER_STEP_TEMP/result.txt; then
     fail "No text specified."
   else
-    fail $(cat $WERCKER_STEP_TEMP/result.txt)\n$json
+    fail "$(cat $WERCKER_STEP_TEMP/result.txt)\n$json"
   fi
 fi
 

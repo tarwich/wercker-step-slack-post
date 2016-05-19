@@ -1,5 +1,5 @@
 name: slack-post
-version: 0.1.5
+version: 0.1.6
 description: Posts wercker build/deploy status to a Slack Channel.
 keywords:
   - notification
