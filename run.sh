@@ -97,7 +97,7 @@ if [ "$RESULT" = "500" ]; then
   elif grep -Fqx "No text specified" $WERCKER_STEP_TEMP/result.txt; then
     fail "No text specified."
   else
-    fail $(cat $WERCKER_STEP_TEMP/result.txt)
+    fail $(cat $WERCKER_STEP_TEMP/result.txt)\n$json
   fi
 fi
 
