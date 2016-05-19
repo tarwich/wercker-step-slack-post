@@ -90,18 +90,14 @@ RESULT=`curl -d "payload=$json" -s  "$WERCKER_SLACK_POST_URL" --output $WERCKER_
 if [ "$RESULT" = "500" ]; then
   if grep -Fqx "No token" $WERCKER_STEP_TEMP/result.txt; then
     fail "No token is specified."
-  fi
-
-  if grep -Fqx "No hooks" $WERCKER_STEP_TEMP/result.txt; then
+  elif grep -Fqx "No hooks" $WERCKER_STEP_TEMP/result.txt; then
     fail "No hook can be found for specified subdomain/token"
-  fi
-
-  if grep -Fqx "Invalid channel specified" $WERCKER_STEP_TEMP/result.txt; then
+  elif grep -Fqx "Invalid channel specified" $WERCKER_STEP_TEMP/result.txt; then
     fail "Could not find specified channel for subdomain/token."
-  fi
-
-  if grep -Fqx "No text specified" $WERCKER_STEP_TEMP/result.txt; then
+  elif grep -Fqx "No text specified" $WERCKER_STEP_TEMP/result.txt; then
     fail "No text specified."
+  else
+    fail $WERCKER_STEP_TEMP/result.txt
   fi
 fi
 
