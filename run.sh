@@ -69,7 +69,7 @@ json=$(cat <<END
     "author_name": "$WERCKER_STARTED_BY",
     "title":       "$WERCKER_APPLICATION_NAME",
     "title_link":  "$WERCKER_APPLICATION_URL",
-    "text":        $(json_escape "$LATEST_COMMIT")
+    "text":        $(json_escape "$LATEST_COMMIT"),
     "fields": [
         {
             "title": "Commit",
