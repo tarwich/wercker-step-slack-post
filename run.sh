@@ -109,5 +109,6 @@ if [ "$RESULT" = "404" ]; then
   fail "Subdomain or token not found."
 fi
 
+echo "Result:  $RESULT"
 
 # https://thevoidray.slack.com/archives/flux/p1456943630000106
