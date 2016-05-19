@@ -37,15 +37,15 @@ WERCKER_TIME_SPENT="in $(($WERCKER_TIME_DIFF / 60)) min $(($WERCKER_TIME_DIFF % 
 
 export LATEST_COMMIT=$(git log -1 --pretty=%B)
 export WERCKER_SLACK_POST_GIT="<http://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY/$GIT_TREE/$WERCKER_GIT_COMMIT|$WERCKER_GIT_REPOSITORY/$WERCKER_GIT_BRANCH@${WERCKER_GIT_COMMIT:0:3}..>"
-export WERCKER_SLACK_POST_GIT="<http://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY/$GIT_TREE/$WERCKER_GIT_COMMIT|$LATEST_COMMIT>"
+export WERCKER_SLACK_POST_GIT="<http://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY/$GIT_TREE/$WERCKER_GIT_COMMIT|#${WERCKER_GIT_COMMIT:0:7}>"
 
 WERCKER_SLACK_FALLBACK_MESSAGE="$WERCKER_APPLICATION_NAME:\
  $WERCKER_SLACK_POST_ACT #${WERCKER_DEPLOY_ID:0:5}\
- [$WERCKER_GIT_REPOSITORY/$WERCKER_GIT_BRANCH@${WERCKER_GIT_COMMIT:0:3}]\
+ [$WERCKER_GIT_REPOSITORY/$WERCKER_GIT_BRANCH@${WERCKER_GIT_COMMIT:0:7}]\
  by $WERCKER_STARTED_BY $WERCKER_RESULT."
 
-export MESSAGE_TEXT="$WERCKER_SLACK_POST_ACT $WERCKER_SLACK_POST_WURL\
- _${WERCKER_RESULT}_ in $WERCKER_TIME_SPENT"
+export SUMMARY="$WERCKER_SLACK_POST_ACT $WERCKER_SLACK_POST_WURL\
+ ${WERCKER_RESULT} in $WERCKER_TIME_SPENT"
 
 case "$WERCKER_RESULT" in
   "passed") export MESSAGE_COLOR="#36A64F" ;;
@@ -65,7 +65,7 @@ json=$(cat <<END
     "author_name": "$WERCKER_STARTED_BY",
     "title":       "$WERCKER_APPLICATION_NAME",
     "title_link":  "$WERCKER_APPLICATION_URL",
-    "text":        "$MESSAGE_TEXT",
+    "text":        "$(printf "%q" "$LATEST_COMMIT")",
     "fields": [
         {
             "title": "Commit",
@@ -75,6 +75,16 @@ json=$(cat <<END
         {
             "title": "Branch",
             "value": "$WERCKER_GIT_BRANCH",
+            "short": true
+        },
+        {
+            "title": "$WERCKER_SLACK_POST_ACT",
+            "value": "$WERCKER_SLACK_POST_WURL",
+            "short": true
+        },
+        {
+            "title": "Time",
+            "value": "$WERCKER_TIME_SPENT",
             "short": true
         }
     ],
