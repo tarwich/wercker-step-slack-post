@@ -2,6 +2,7 @@ box: wercker/default
 build:
   steps:
     - validate-wercker-step
+  after-steps:
     - script:
         name: run myself as a test
         code: |

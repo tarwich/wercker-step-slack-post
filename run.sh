@@ -53,6 +53,10 @@ case "$WERCKER_RESULT" in
   *)        export MESSAGE_COLOR="#3663A6" ;;
 esac
 
+function json_escape() {
+  echo -n "$1" | python -c 'import json,sys; print json.dumps(sys.stdin.read())'
+}
+
 json=$(cat <<END
 {
   "fallback": "$WERCKER_SLACK_FALLBACK_MESSAGE",
@@ -65,7 +69,7 @@ json=$(cat <<END
     "author_name": "$WERCKER_STARTED_BY",
     "title":       "$WERCKER_APPLICATION_NAME",
     "title_link":  "$WERCKER_APPLICATION_URL",
-    "text":        "$(printf "%q" "$LATEST_COMMIT")",
+    "text":        $(json_escape "$LATEST_COMMIT")
     "fields": [
         {
             "title": "Commit",
@@ -87,9 +91,7 @@ json=$(cat <<END
             "value": "$WERCKER_TIME_SPENT",
             "short": true
         }
-    ],
-    "image_url": "http://my-website.com/path/to/image.jpg",
-    "thumb_url": "http://example.com/path/to/thumb.png"
+    ]
   }]
 }
 END
