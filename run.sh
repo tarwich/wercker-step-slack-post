@@ -1,10 +1,12 @@
 #!/bin/bash
 
-if [ ! -n "$WERCKER_SLACK_POST_URL" ]; then
+if [ -z "$WERCKER_SLACK_POST_URL" ]; then
   fail 'Missing url property'
 fi
 
-if [ ! -n "$WERCKER_SLACK_POST_USERNAME" ]; then
+DEPLOY=true
+
+if [ -z "$WERCKER_SLACK_POST_USERNAME" ]; then
   # Default username - werckerbot
   if [ -n "$DEPLOY" ] ; then
     export WERCKER_SLACK_POST_USERNAME=deploybot
@@ -36,7 +38,7 @@ fi
 if [[ $WERCKER_GIT_DOMAIN == bitbucket* ]]; then export GIT_TREE="commits"; else export GIT_TREE="commit"; fi
 
 # Get the time of the build
-WERCKER_TIME_START=$WERCKER_MAIN_PIPELINE_STARTED
+WERCKER_TIME_START=${WERCKER_MAIN_PIPELINE_STARTED-$(date +"%s")}
 WERCKER_TIME_END=$(date +"%s")
 WERCKER_TIME_DIFF=$(($WERCKER_TIME_END-$WERCKER_TIME_START))
 WERCKER_TIME_SPENT="$(($WERCKER_TIME_DIFF / 60)) min $(($WERCKER_TIME_DIFF % 60)) sec."
@@ -108,8 +110,9 @@ function json_escape() {
 END
 )
 
-DEPLOY_MESSAGE="$WERCKER_APPLICATION_NAME\
- $WERCKER_ACT_TITLE from $WERCKER_GIT_BRANCH *${WERCKER_RESULT}* for \
+
+DEPLOY_MESSAGE="Deployment of $WERCKER_APPLICATION_NAME\
+ from branch \`$WERCKER_GIT_BRANCH\` *${WERCKER_RESULT}* for commit\
  $WERCKER_SLACK_POST_GIT"
 
 # This is a deployment. Send a deployment message
@@ -123,7 +126,7 @@ DEPLOY_MESSAGE="$WERCKER_APPLICATION_NAME\
     "fallback":    "Deploy $WERCKER_RESULT in $WERCKER_TIME_SPENT",
     "color":       "$MESSAGE_COLOR",
     "mrkdwn_in":   ["text"],
-    "text":        "$DEPLOY_MESSAGE",
+    "text":        "$DEPLOY_MESSAGE"
   }]
 }
 END
@@ -132,6 +135,9 @@ END
 RESULT=`curl -d "payload=$json" -s  "$WERCKER_SLACK_POST_URL" --output $WERCKER_STEP_TEMP/result.txt -w "%{http_code}"`
 
 if [ "$RESULT" = "500" ]; then
+  # Show the JSON payload
+  warn "$json\n"
+
   if grep -Fqx "No token" $WERCKER_STEP_TEMP/result.txt; then
     fail "No token is specified."
   elif grep -Fqx "No hooks" $WERCKER_STEP_TEMP/result.txt; then
@@ -141,7 +147,7 @@ if [ "$RESULT" = "500" ]; then
   elif grep -Fqx "No text specified" $WERCKER_STEP_TEMP/result.txt; then
     fail "No text specified."
   else
-    fail "$(cat $WERCKER_STEP_TEMP/result.txt)\n$json"
+    fail "$(cat $WERCKER_STEP_TEMP/result.txt)"
   fi
 fi
 

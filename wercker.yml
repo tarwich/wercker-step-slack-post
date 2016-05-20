@@ -1,4 +1,4 @@
-box: wercker/default
+box: kilianciuffolo/wercker
 build:
   steps:
     - validate-wercker-step

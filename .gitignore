@@ -1,4 +1,11 @@
-*.log
+# ----------[ Application Stuff ]----------------------------------------
+
 # Wercker stuff
+*.log
 _*
+# Local environment variables
+local.env
+
+# ----------[ OS Stuff ]----------------------------------------
+# OS Metadata
 .DS_Store
