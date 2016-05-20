@@ -4,8 +4,6 @@ if [ -z "$WERCKER_SLACK_POST_URL" ]; then
   fail 'Missing url property'
 fi
 
-DEPLOY=true
-
 if [ -z "$WERCKER_SLACK_POST_USERNAME" ]; then
   # Default username - werckerbot
   if [ -n "$DEPLOY" ] ; then
@@ -49,6 +47,8 @@ COMMIT_BODY=$(echo "$LATEST_COMMIT" | tail -n +2)
 COMMIT_BODY=${COMMIT_BODY#"${COMMIT_BODY%%[![:space:]]*}"}
 export WERCKER_SLACK_POST_GIT="<http://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY/$GIT_TREE/$WERCKER_GIT_COMMIT|$WERCKER_GIT_REPOSITORY/$WERCKER_GIT_BRANCH@${WERCKER_GIT_COMMIT:0:3}..>"
 export WERCKER_SLACK_POST_GIT="<http://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY/$GIT_TREE/$WERCKER_GIT_COMMIT|#${WERCKER_GIT_COMMIT:0:7}>"
+# Set the icon for the author
+ICON_URL="https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/${WERCKER_ACT}-${WERCKER_RESULT}.png"
 
 WERCKER_SLACK_FALLBACK_MESSAGE="$WERCKER_APPLICATION_NAME:\
  $WERCKER_ACT_TITLE #${WERCKER_DEPLOY_ID:0:5}\
@@ -73,7 +73,7 @@ function json_escape() {
 {
   "fallback": "$WERCKER_SLACK_FALLBACK_MESSAGE",
   "channel":  "#$WERCKER_SLACK_POST_CHANNEL",
-  "icon_url": "https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/${WERCKER_ACT}-${WERCKER_RESULT}.png",
+  "icon_url": "$ICON_URL",
   "username": "$WERCKER_SLACK_POST_USERNAME",
   "attachments": [{
     "fallback":    "Build $WERCKER_RESULT in $WERCKER_TIME_SPENT",
@@ -118,15 +118,15 @@ DEPLOY_MESSAGE="Deployment of $WERCKER_APPLICATION_NAME\
 # This is a deployment. Send a deployment message
 [ -n "$DEPLOY" ] && json=$(cat <<END
 {
-  "fallback": "$WERCKER_SLACK_FALLBACK_MESSAGE",
-  "channel":  "#$WERCKER_SLACK_POST_CHANNEL",
-  "icon_url": "https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/${WERCKER_ACT}-${WERCKER_RESULT}.png",
-  "username": "$WERCKER_SLACK_POST_USERNAME",
+  "fallback":  "$WERCKER_SLACK_FALLBACK_MESSAGE",
+  "channel":   "#$WERCKER_SLACK_POST_CHANNEL",
+  "icon_url":  "$ICON_URL",
+  "username":  "$WERCKER_SLACK_POST_USERNAME",
   "attachments": [{
-    "fallback":    "Deploy $WERCKER_RESULT in $WERCKER_TIME_SPENT",
-    "color":       "$MESSAGE_COLOR",
-    "mrkdwn_in":   ["text"],
-    "text":        "$DEPLOY_MESSAGE"
+    "fallback":  "Deploy $WERCKER_RESULT in $WERCKER_TIME_SPENT",
+    "color":     "$MESSAGE_COLOR",
+    "mrkdwn_in": ["text"],
+    "text":      "$DEPLOY_MESSAGE"
   }]
 }
 END
