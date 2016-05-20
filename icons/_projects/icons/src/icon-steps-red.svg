@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4 (15575) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-steps</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="icon-steps" sketch:type="MSLayerGroup">
+            <ellipse id="Oval-5-Copy" fill="#E65F77" sketch:type="MSShapeGroup" cx="24.9006659" cy="24.9006659" rx="24.9006659" ry="24.9006659"></ellipse>
+            <path d="M27.1632,20.0769512 L12.611,20.0769512 M21.061,25.2978293 L12.611,25.2978293 M24.961,30.5200244 L12.611,30.5200244" id="Stroke-1" stroke="#E3F7FF" stroke-width="2" sketch:type="MSShapeGroup"></path>
+            <path d="M28.21815,12.1284146 L37.31815,25.4861707 L28.21815,38.469878" id="Stroke-2" stroke="#E3F7FF" stroke-width="2" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>

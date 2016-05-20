@@ -6,7 +6,11 @@ fi
 
 if [ ! -n "$WERCKER_SLACK_POST_USERNAME" ]; then
   # Default username - werckerbot
-  export WERCKER_SLACK_POST_USERNAME=werckerbot
+  if [ -n "$DEPLOY" ] ; then
+    export WERCKER_SLACK_POST_USERNAME=deploybot
+  else
+    export WERCKER_SLACK_POST_USERNAME=buildbot
+  fi
 fi
 
 if [ ! -n "$WERCKER_SLACK_POST_CHANNEL" ]; then
@@ -20,10 +24,12 @@ if [[ $WERCKER_SLACK_POST_CHANNEL == \#* ]]; then
 fi
 
 if [ ! -n "$DEPLOY" ]; then
-  export WERCKER_SLACK_POST_ACT="Build"
+  export WERCKER_ACT="build"
+  export WERCKER_ACT_TITLE="Build"
   export WERCKER_SLACK_POST_WURL="<$WERCKER_BUILD_URL|#${WERCKER_BUILD_ID:0:7}>"
 else
-  export WERCKER_SLACK_POST_ACT="Deploy"
+  export WERCKER_ACT="deploy"
+  export WERCKER_ACT_TITLE="Deploy"
   export WERCKER_SLACK_POST_WURL="<$WERCKER_DEPLOY_URL|#${WERCKER_DEPLOY_ID:0:7}>"
 fi
 
@@ -43,11 +49,11 @@ export WERCKER_SLACK_POST_GIT="<http://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$W
 export WERCKER_SLACK_POST_GIT="<http://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY/$GIT_TREE/$WERCKER_GIT_COMMIT|#${WERCKER_GIT_COMMIT:0:7}>"
 
 WERCKER_SLACK_FALLBACK_MESSAGE="$WERCKER_APPLICATION_NAME:\
- $WERCKER_SLACK_POST_ACT #${WERCKER_DEPLOY_ID:0:5}\
+ $WERCKER_ACT_TITLE #${WERCKER_DEPLOY_ID:0:5}\
  [$WERCKER_GIT_REPOSITORY/$WERCKER_GIT_BRANCH@${WERCKER_GIT_COMMIT:0:7}]\
  by $WERCKER_STARTED_BY $WERCKER_RESULT."
 
-export SUMMARY="$WERCKER_SLACK_POST_ACT $WERCKER_SLACK_POST_WURL\
+export SUMMARY="$WERCKER_ACT_TITLE $WERCKER_SLACK_POST_WURL\
  ${WERCKER_RESULT} in $WERCKER_TIME_SPENT"
 
 case "$WERCKER_RESULT" in
@@ -60,11 +66,12 @@ function json_escape() {
   echo -n "$1" | python -c 'import json,sys; print json.dumps(sys.stdin.read())'
 }
 
-json=$(cat <<END
+# This is a build. Send a build message
+[ -z "$DEPLOY" ] && json=$(cat <<END
 {
   "fallback": "$WERCKER_SLACK_FALLBACK_MESSAGE",
   "channel":  "#$WERCKER_SLACK_POST_CHANNEL",
-  "icon_url": "https://2.gravatar.com/avatar/f777ecfdf484eed89dc6f215b78fef11?d=57",
+  "icon_url": "https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/${WERCKER_ACT}-${WERCKER_RESULT}.png",
   "username": "$WERCKER_SLACK_POST_USERNAME",
   "attachments": [{
     "fallback":    "Build $WERCKER_RESULT in $WERCKER_TIME_SPENT",
@@ -86,7 +93,7 @@ json=$(cat <<END
             "short": true
         },
         {
-            "title": "$WERCKER_SLACK_POST_ACT $WERCKER_RESULT",
+            "title": "$WERCKER_ACT_TITLE $WERCKER_RESULT",
             "value": "$WERCKER_SLACK_POST_WURL",
             "short": true
         },
@@ -96,6 +103,27 @@ json=$(cat <<END
             "short": true
         }
     ]
+  }]
+}
+END
+)
+
+DEPLOY_MESSAGE="$WERCKER_APPLICATION_NAME\
+ $WERCKER_ACT_TITLE from $WERCKER_GIT_BRANCH *${WERCKER_RESULT}* for \
+ $WERCKER_SLACK_POST_GIT"
+
+# This is a deployment. Send a deployment message
+[ -n "$DEPLOY" ] && json=$(cat <<END
+{
+  "fallback": "$WERCKER_SLACK_FALLBACK_MESSAGE",
+  "channel":  "#$WERCKER_SLACK_POST_CHANNEL",
+  "icon_url": "https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/${WERCKER_ACT}-${WERCKER_RESULT}.png",
+  "username": "$WERCKER_SLACK_POST_USERNAME",
+  "attachments": [{
+    "fallback":    "Deploy $WERCKER_RESULT in $WERCKER_TIME_SPENT",
+    "color":       "$MESSAGE_COLOR",
+    "mrkdwn_in":   ["text"],
+    "text":        "$DEPLOY_MESSAGE",
   }]
 }
 END
