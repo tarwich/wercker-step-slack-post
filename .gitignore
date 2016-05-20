@@ -1,0 +1,4 @@
+*.log
+# Wercker stuff
+_*
+.DS_Store
