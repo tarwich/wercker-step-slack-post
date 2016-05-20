@@ -76,13 +76,14 @@ function json_escape() {
   "icon_url": "$ICON_URL",
   "username": "$WERCKER_SLACK_POST_USERNAME",
   "attachments": [{
-    "fallback":    "Build $WERCKER_RESULT in $WERCKER_TIME_SPENT",
-    "color":       "$MESSAGE_COLOR",
-    "author_name": "$WERCKER_STARTED_BY",
     "author_link": "https://github.com/$WERCKER_STARTED_BY",
-    "title":       $(json_escape "$COMMIT_HEADER"),
-    "title_link":  "http://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY/$GIT_TREE/$WERCKER_GIT_COMMIT",
+    "author_name": "$WERCKER_STARTED_BY",
+    "color":       "$MESSAGE_COLOR",
+    "fallback":    "Build $WERCKER_RESULT in $WERCKER_TIME_SPENT",
+    "mrkdwn_in":   ["text"],
     "text":        $(json_escape "$COMMIT_BODY"),
+    "title_link":  "http://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY/$GIT_TREE/$WERCKER_GIT_COMMIT",
+    "title":       $(json_escape "$COMMIT_HEADER"),
     "fields": [
         {
             "title": "Commit",
