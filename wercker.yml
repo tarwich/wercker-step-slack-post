@@ -2,8 +2,10 @@ box: wercker/default
 build:
   steps:
     - validate-wercker-step
+    - script:
+        name: dump env
+        code: set
   after-steps:
     - script:
         name: run myself as a test
-        code: |
-          . ./run.sh
+        code: . ./run.sh

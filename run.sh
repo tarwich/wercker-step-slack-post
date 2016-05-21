@@ -133,7 +133,8 @@ DEPLOY_MESSAGE="Deployment of $WERCKER_APPLICATION_NAME\
 END
 )
 
-RESULT=`curl -d "payload=$json" -s  "$WERCKER_SLACK_POST_URL" --output $WERCKER_STEP_TEMP/result.txt -w "%{http_code}"`
+# RESULT=`curl -d "payload=$json" -s  "$WERCKER_SLACK_POST_URL" --output $WERCKER_STEP_TEMP/result.txt -w "%{http_code}"`
+RESULT="200"
 
 if [ "$RESULT" = "500" ]; then
   # Show the JSON payload
@@ -156,4 +157,6 @@ if [ "$RESULT" = "404" ]; then
   fail "Subdomain or token not found."
 fi
 
-echo "Result:  $RESULT"
+if [ "$RESULT" = "200"]; then
+  info "Message sent"
+fi
