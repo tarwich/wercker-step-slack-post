@@ -15,63 +15,67 @@ function main() {
 #
 function build_json() {
   # This is a build. Send a build message
-  if [[ $WERCKER_ACTION = "build"  ]] ; then SLACK_JSON=$(cat <<END
-    {
-      "fallback": "$SLACK_FALLBACK_MESSAGE",
-      "channel":  "#$SLACK_CHANNEL",
-      "icon_url": "$SLACK_AVATAR",
-      "username": "$SLACK_USERNAME",
-      "attachments": [{
-        "author_name": "$GIT_AUTHOR",
-        "author_link": "https://$GIT_DOMAIN/$GIT_AUTHOR",
-        "color":       "$SLACK_COLOR",
-        "fallback":    "$SLACK_FALLBACK_MESSAGE",
-        "mrkdwn_in":   ["text"],
-        "text":        $(json_string "$COMMIT_BODY"),
-        "title_link":  "$GIT_COMMIT_URL",
-        "title":       $(json_string "$COMMIT_HEADER"),
-        "fields": [
-        {
-          "title": "Commit",
-          "value": "<$GIT_COMMIT_URL|#$GIT_COMMIT>",
-          "short": true
-        },
-        {
-          "title": "Branch",
-          "value": "<https://$GIT_DOMAIN/$GIT_OWNER/$GIT_REPOSITORY/$GIT_TREE/$GIT_BRANCH|$GIT_BRANCH>",
-          "short": true
-        },
-        {
-          "title": "$(ucfirst $WERCKER_ACTION) $WERCKER_RESULT",
-          "value": "<$WERCKER_JOB_URL|#$WERCKER_JOB_ID>",
-          "short": true
-        },
-        {
-          "title": "Time",
-          "value": "$WERCKER_TIME_SPENT",
-          "short": true
-        }
-        ]
-      }]
-    }
-END)
+  if [[ $WERCKER_ACTION = "build"  ]] ; then
+    SLACK_JSON=$(cat <<END
+      {
+        "fallback": "$SLACK_FALLBACK_MESSAGE",
+        "channel":  "#$SLACK_CHANNEL",
+        "icon_url": "$SLACK_AVATAR",
+        "username": "$SLACK_USERNAME",
+        "attachments": [{
+          "author_name": "$GIT_AUTHOR",
+          "author_link": "https://$GIT_DOMAIN/$GIT_AUTHOR",
+          "color":       "$SLACK_COLOR",
+          "fallback":    "$SLACK_FALLBACK_MESSAGE",
+          "mrkdwn_in":   ["text"],
+          "text":        $(json_string "$COMMIT_BODY"),
+          "title_link":  "$GIT_COMMIT_URL",
+          "title":       $(json_string "$COMMIT_HEADER"),
+          "fields": [
+          {
+            "title": "Commit",
+            "value": "<$GIT_COMMIT_URL|#$GIT_COMMIT>",
+            "short": true
+          },
+          {
+            "title": "Branch",
+            "value": "<https://$GIT_DOMAIN/$GIT_OWNER/$GIT_REPOSITORY/$GIT_TREE/$GIT_BRANCH|$GIT_BRANCH>",
+            "short": true
+          },
+          {
+            "title": "$(ucfirst $WERCKER_ACTION) $WERCKER_RESULT",
+            "value": "<$WERCKER_JOB_URL|#$WERCKER_JOB_ID>",
+            "short": true
+          },
+          {
+            "title": "Time",
+            "value": "$WERCKER_TIME_SPENT",
+            "short": true
+          }
+          ]
+        }]
+      }
+END
+    )
   fi
 
   # This is a deployment. Send a deployment message
-  if [[ "$WERCKER_ACTION" = "deploy" ]] ; then SLACK_JSON=$(cat <<END
-    {
-      "fallback":  "$SLACK_FALLBACK_MESSAGE",
-      "channel":   "#$SLACK_CHANNEL",
-      "icon_url":  "$SLACK_AVATAR",
-      "username":  "$SLACK_USERNAME",
-      "attachments": [{
-        "fallback":  "Deploy $WERCKER_RESULT in $WERCKER_TIME_SPENT",
-        "color":     "$SLACK_COLOR",
-        "mrkdwn_in": ["text"],
-        "text":      "$SLACK_DEPLOYMENT_MESSAGE"
-      }]
-    }
-END)
+  if [[ "$WERCKER_ACTION" = "deploy" ]] ; then
+    SLACK_JSON=$(cat <<END
+      {
+        "fallback":  "$SLACK_FALLBACK_MESSAGE",
+        "channel":   "#$SLACK_CHANNEL",
+        "icon_url":  "$SLACK_AVATAR",
+        "username":  "$SLACK_USERNAME",
+        "attachments": [{
+          "fallback":  "Deploy $WERCKER_RESULT in $WERCKER_TIME_SPENT",
+          "color":     "$SLACK_COLOR",
+          "mrkdwn_in": ["text"],
+          "text":      "$SLACK_DEPLOYMENT_MESSAGE"
+        }]
+      }
+END
+    )
   fi
 }
 

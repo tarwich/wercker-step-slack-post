@@ -1,5 +1,5 @@
-# box: wercker/default
-box: node:0.10
+box: wercker/default
+# box: node:0.10
 build:
     steps:
         - validate-wercker-step
