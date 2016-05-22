@@ -261,6 +261,17 @@ function load_env() {
     # declare -x ${NEWVAR}=${!VAR}
     export $NEWVAR=${!VAR}
   done
+
+  # ----------[ Set defaults ]----------------------------------------
+  WERCKER_SLACK_POST_CHANNEL=${WERCKER_SLACK_POST_CHANNEL:-general}
+  WERCKER_SLACK_POST_BUILD_USERNAME=${WERCKER_SLACK_POST_BUILD_USERNAME:-buildbot}
+  WERCKER_SLACK_POST_DEPLOY_USERNAME=${WERCKER_SLACK_POST_DEPLOY_USERNAME:-deploybot}
+  WERCKER_SLACK_POST_ICON_BUILD_PASSED=${WERCKER_SLACK_POST_ICON_BUILD_PASSED:-https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/build-passed.png}
+  WERCKER_SLACK_POST_ICON_BUILD_FAILED=${WERCKER_SLACK_POST_ICON_BUILD_FAILED:-https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/build-failed.png}
+  WERCKER_SLACK_POST_ICON_DEPLOY_PASSED=${WERCKER_SLACK_POST_ICON_DEPLOY_PASSED:-https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/deploy-passed.png}
+  WERCKER_SLACK_POST_ICON_DEPLOY_FAILED=${WERCKER_SLACK_POST_ICON_DEPLOY_FAILED:-https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/deploy-failed.png}
+  WERCKER_SLACK_POST_COLOR_PASSED=${WERCKER_SLACK_POST_COLOR_PASSED:-"#36A64F"}
+  WERCKER_SLACK_POST_COLOR_FAILED=${WERCKER_SLACK_POST_COLOR_FAILED:-"#A63636"}
 }
 
 #
