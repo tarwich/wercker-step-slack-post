@@ -142,7 +142,7 @@ function gather_git_facts() {
   esac
   # ----------[ GIT_BRANCH ]----------------------------------------
   #
-  GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  GIT_BRANCH=${WERCKER_GIT_BRANCH:-$(git rev-parse --abbrev-ref HEAD)}
   # ----------[ GIT_COMMIT_URL ]----------------------------------------
   GIT_COMMIT_URL="http://$GIT_DOMAIN/$GIT_OWNER/$GIT_REPOSITORY/$GIT_COMMITS/$GIT_COMMIT"
   # ----------[ COMMIT_HEADER ]----------------------------------------
