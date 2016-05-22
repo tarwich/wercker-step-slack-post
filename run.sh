@@ -218,12 +218,10 @@ function gather_wercker_facts() {
     WERCKER_ACTION="deploy"
     WERCKER_JOB_URL=$WERCKER_DEPLOY_URL
     WERCKER_JOB_ID=${WERCKER_DEPLOY_ID:0:7}
-    WERCKER_JOB_URL="https://app.wercker.com/#deploy/${WERCKER_DEPLOY_ID}"
   else
     WERCKER_ACTION="build"
     WERCKER_JOB_URL=$WERCKER_BUILD_URL
     WERCKER_JOB_ID=${WERCKER_BUILD_ID:0:7}
-    WERCKER_JOB_URL="https://app.wercker.com/#buildstep/${WERCKER_BUILD_ID}"
   fi
 
   # ----------[ WERCKER_STEP_VERSION ]----------------------------------------
