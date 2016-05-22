@@ -116,7 +116,8 @@ function gather_git_facts() {
   GIT_OWNER=${GIT_BASE_URL#*$GIT_DOMAIN?}
   GIT_OWNER=${GIT_OWNER%%/*}
   # ----------[ GIT_REPOSITORY ]----------------------------------------
-  GIT_REPOSITORY=${GIT_BASE_URL#*/}
+  GIT_REPOSITORY=${GIT_BASE_URL##*/}  # Slice off everything before the last '/'
+  GIT_REPOSITORY=${GIT_REPOSITORY%.git*} # Slice off the .git if present
   # ----------[ GIT_COMMIT ]----------------------------------------
   GIT_COMMIT=$(git rev-parse --short HEAD)
   # ----------[ GIT_AUTHOR ]----------------------------------------
