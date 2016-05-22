@@ -1,11 +1,8 @@
-box: wercker/default
-# box: node:0.10
+# box: wercker/default
+box: node:0.10
 build:
     steps:
         - validate-wercker-step
-        - script:
-                name: dump env
-                code: env
     after-steps:
         - script:
                 name: run myself as a test

@@ -4,7 +4,7 @@
 *.log
 _*
 # Local environment variables
-local.env
+*.env
 
 # ----------[ OS Stuff ]----------------------------------------
 # OS Metadata
