@@ -7,52 +7,52 @@ This project is forked from the awesome work of [kobim]
 [Slack]: https://slack.com/
 [kobim]: https://github.com/kobim/wercker-step-slack-post
 
-<!-- [![wercker status](https://app.wercker.com/status/49d7c3919df2d65ed4679bcc86eb3477/m "wercker status")](https://app.wercker.com/project/bykey/49d7c3919df2d65ed4679bcc86eb3477) -->
+[![wercker status](https://app.wercker.com/status/2e1e6f8d0019065fdf1ae2d2d49f366c/m "wercker status")](https://app.wercker.com/project/bykey/2e1e6f8d0019065fdf1ae2d2d49f366c)
 
 ### Required fields
 
-* `url` - Your incoming webhook url (get it at https://slack.com/services/new/incoming-webhook).
+| Field | Description |
+|-------|-------------|
+| `url` | Your incoming [webhook url] |
+
+[webhook url]: https://slack.com/services/new/incoming-webhook
 
 ### Optional fields
 
-* `channel` - The Slack Channel you wish to post to (default - `#general`).
-* `username` - The robot's username (default - `werckerbot`).
+| Field                | Default   | Description |
+|----------------------|-----------|-------------|
+| `channel`            | #general  | The Slack channel to post messages to |
+| `build-username`     | buildbot  | Username for the bot when the action is a build |
+| `deploy-username`    | deploybot | Username for the bot when the action is a deployment |
+| `icon-build-passed`  | ![Green Icon](https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/build-passed.png?v1.0.3) | An icon to use when the build passes |
+| `icon-build-failed`  | ![Red Icon](https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/build-failed.png?v1.0.3) | An icon to use when the build fails |
+| `icon-deploy-passed` | ![Green Icon](https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/deploy-passed.png?v1.0.3) | An icon to use when the deployment fails |
+| `icon-deploy-failed` | ![Red Icon](https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/deploy-failed.png?v1.0.3) | An icon to use when the deployment passes |
+| `color-passed`       | \#36A64F  | The color of the message when the deployment or build passes |
+| `color-failed`       | \#A63636  | The color of the message when the deployment or build fails |
 
 ### How to configure?
 
-Under your project settings, add new Pipeline variable named `SLACK_URL` with your WebHook url. You then reference this variable in your [wercker.yml](http://devcenter.wercker.com/articles/werckeryml/).
+Under your project settings, add after-step in your [wercker.yml] and provide `url` and any other variables you wish to set.
 
+**Important!** It's highly recommended that you provide url, by setting an [environment variable] such as `SLACK_URL`, and then placing it in the [wercker.yml] file as seen below in the example.
 
-# Example
+[wercker.yml]: http://devcenter.wercker.com/articles/werckeryml/
+[environment variable]: http://devcenter.wercker.com/docs/environment-variables/creating-env-vars.html
 
-Add `SLACK_URL` as deploy target or application environment variable.
+#### Example
 
-  build:
+```yaml
+build:
     after-steps:
-      - tarwich/slack-post:
-        url:      $SLACK_URL
-        channel:  dev        # OPTIONAL
-        username: builder    # OPTIONAL
-
-# License
-
-The MIT License (MIT)
-
-Copyright (c) 2013 wercker
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+        - tarwich/slack-post:
+              url:                $SLACK_URL
+              # The rest are optional. If you don't need them,
+              # just leave them out so that if we push changes,
+              # you'll get the new stuff.
+              channel:            general
+              build-username:     buildbot
+              deploy-username:    deploybot
+              # You get the point. Add any other settings
+              # you wish to override.
+```
