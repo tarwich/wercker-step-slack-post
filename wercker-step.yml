@@ -11,9 +11,9 @@ properties:
   username:           {required: false, type: string}
   build-username:     {required: false, type: string, default: buildbot}
   deploy-username:    {required: false, type: string, default: deploybot}
-  icon-build-passed:  {required: false, type: string, default: https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/build-passed.png}
-  icon-build-failed:  {required: false, type: string, default: https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/build-failed.png}
-  icon-deploy-passed: {required: false, type: string, default: https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/deploy-passed.png}
-  icon-deploy-failed: {required: false, type: string, default: https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/deploy-failed.png}
+  icon-build-passed:  {required: false, type: string, default: "https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/build-passed.png"}
+  icon-build-failed:  {required: false, type: string, default: "https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/build-failed.png"}
+  icon-deploy-passed: {required: false, type: string, default: "https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/deploy-passed.png"}
+  icon-deploy-failed: {required: false, type: string, default: "https://raw.githubusercontent.com/tarwich/wercker-step-slack-post/master/icons/deploy-failed.png"}
   color-passed:       {required: false, type: string, default: "#36A64F"}
   color-failed:       {required: false, type: string, default: "#A63636"}
