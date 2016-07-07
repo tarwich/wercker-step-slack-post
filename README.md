@@ -7,7 +7,7 @@ This project is forked from the awesome work of [kobim]
 [Slack]: https://slack.com/
 [kobim]: https://github.com/kobim/wercker-step-slack-post
 
-[![wercker status](https://app.wercker.com/status/2e1e6f8d0019065fdf1ae2d2d49f366c/m "wercker status")](https://app.wercker.com/project/bykey/2e1e6f8d0019065fdf1ae2d2d49f366c)
+[![wercker status](https://app.wercker.com/status/63eff42dccc87c427d30f68a11e726d0/m "wercker status")](https://app.wercker.com/project/bykey/63eff42dccc87c427d30f68a11e726d0)
 
 ### Required fields
 
