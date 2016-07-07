@@ -1,9 +1,9 @@
 box: wercker/default
 # box: node:0.10
 build:
-    steps:
-        - validate-wercker-step
-    after-steps:
-        - script:
-                name: run myself as a test
-                code: . ./run.sh
+  steps:
+    - validate-wercker-step
+  after-steps:
+    - script:
+      name: run myself as a test
+      code: . ./run.sh

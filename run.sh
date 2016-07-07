@@ -298,7 +298,7 @@ function send_slack_message() {
 
   if [ "$RESULT" = "500" ]; then
     # Show the JSON payload
-    warn "$json\n"
+    warn "$SLACK_JSON\n"
 
     if grep -Fqx "No token" $WERCKER_STEP_TEMP/result.txt; then
       fail "No token is specified."
@@ -312,12 +312,12 @@ function send_slack_message() {
       fail "$(cat $WERCKER_STEP_TEMP/result.txt)"
     fi
   elif [ "$RESULT" = "404" ]; then
-    warn "$json\n"
+    warn "$SLACK_JSON\n"
     fail "Subdomain or token not found."
   elif [[  "$RESULT" = "200"  ]]; then
     info "Message sent"
   else
-    warn "$json\n"
+    warn "$SLACK_JSON\n"
     fail "Unexpected result: $RESULT"
   fi
 }
