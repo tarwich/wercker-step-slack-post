@@ -166,7 +166,13 @@ function gather_slack_facts() {
 
   # ----------[ SLACK_CHANNEL ]----------------------------------------
   # What channel should we post in
-  SLACK_CHANNEL=${WERCKER_SLACK_POST_CHANNEL#*\#} # Strip leading '#'
+  if [[ $WERCKER_SLACK_POST_CHANNEL == "#*" ]] ; then
+    SLACK_CHANNEL=$WERCKER_SLACK_POST_CHANNEL
+  elif [[ $WERCKER_SLACK_POST_CHANNEL == "@*" ]] ; then
+    SLACK_CHANNEL=$WERCKER_SLACK_POST_CHANNEL
+  else
+    SLACK_CHANNEL="#$WERCKER_SLACK_POST_CHANNEL"
+  fi
 
   # ----------[ SLACK_COLOR ]----------------------------------------
   # The message should be colored red on error and green on success
