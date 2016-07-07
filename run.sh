@@ -312,6 +312,7 @@ function send_slack_message() {
       fail "$(cat $WERCKER_STEP_TEMP/result.txt)"
     fi
   elif [ "$RESULT" = "404" ]; then
+    warn "$json\n"
     fail "Subdomain or token not found."
   elif [[  "$RESULT" = "200"  ]]; then
     info "Message sent"
