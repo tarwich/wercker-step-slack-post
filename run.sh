@@ -19,7 +19,7 @@ function build_json() {
     SLACK_JSON=$(cat <<END
       {
         "fallback": "$SLACK_FALLBACK_MESSAGE",
-        "channel":  "#$SLACK_CHANNEL",
+        "channel":  "$SLACK_CHANNEL",
         "icon_url": "$SLACK_AVATAR",
         "username": "$SLACK_USERNAME",
         "attachments": [{
@@ -64,7 +64,7 @@ END
     SLACK_JSON=$(cat <<END
       {
         "fallback":  "$SLACK_FALLBACK_MESSAGE",
-        "channel":   "#$SLACK_CHANNEL",
+        "channel":   "$SLACK_CHANNEL",
         "icon_url":  "$SLACK_AVATAR",
         "username":  "$SLACK_USERNAME",
         "attachments": [{
@@ -166,9 +166,9 @@ function gather_slack_facts() {
 
   # ----------[ SLACK_CHANNEL ]----------------------------------------
   # What channel should we post in
-  if [[ $WERCKER_SLACK_POST_CHANNEL == "#*" ]] ; then
+  if [[ ${WERCKER_SLACK_POST_CHANNEL:0:1} == "#" ]] ; then
     SLACK_CHANNEL=$WERCKER_SLACK_POST_CHANNEL
-  elif [[ $WERCKER_SLACK_POST_CHANNEL == "@*" ]] ; then
+  elif [[ ${WERCKER_SLACK_POST_CHANNEL:0:1} == "@" ]] ; then
     SLACK_CHANNEL=$WERCKER_SLACK_POST_CHANNEL
   else
     SLACK_CHANNEL="#$WERCKER_SLACK_POST_CHANNEL"
